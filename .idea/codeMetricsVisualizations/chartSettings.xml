@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChartSettings">
+    <option name="configs">
+      <ChartConfig>
+        <option name="llmDescription" value="The chart should show the p95 response time per day for the last 7 recorded days (not today but date of last record) of selected mapping. Use approx_quantile function." />
+        <option name="name" value="P95 Resp. Time (ms)" />
+        <option name="sqlTemplate" value="WITH latest_day AS (&#10;  SELECT MAX(CAST(timestamp AS DATE)) AS max_day&#10;  FROM access_logs&#10;),&#10;filtered_logs AS (&#10;  SELECT *&#10;  FROM access_logs, latest_day&#10;  WHERE CAST(timestamp AS DATE) BETWEEN max_day - INTERVAL 6 DAY AND max_day&#10;    AND http_method LIKE '#mapping_method#'&#10;    AND REGEXP_MATCHES(request_path, '^#mapping_path#/?(\?.*)?$')&#10;    AND REGEXP_MATCHES(request_path, '^(#mapping_paths_in_file#)(/.*)?(\?.*)?$')&#10;)&#10;SELECT CAST(timestamp AS DATE) AS day,&#10;       approx_quantile(duration_ms, 0.95) AS p95_latency_ms&#10;FROM filtered_logs&#10;GROUP BY day&#10;ORDER BY day;&#10;" />
+        <option name="llmRelevantTableNames">
+          <option value="access_logs" />
+        </option>
+      </ChartConfig>
+      <ChartConfig>
+        <option name="llmDescription" value="The chart should show number of unique users for each method in current file. Please show only method name and class name, not the whole package." />
+        <option name="name" value="Unique Users / Service Method" />
+        <option name="sqlTemplate" value="SELECT &#10;  regexp_extract(method_fqn, '([^.]+\.[^.]+)$') AS class_and_method,&#10;  COUNT(DISTINCT user_id) AS unique_users&#10;FROM app_activity&#10;WHERE method_fqn IN (#method_fqns_in_file#)&#10;GROUP BY class_and_method;&#10;" />
+        <option name="llmRelevantTableNames">
+          <option value="app_activity" />
+          <option value="user_feature_flags" />
+        </option>
+      </ChartConfig>
+    </option>
+  </component>
+</project>

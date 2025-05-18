@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FeatureEvaluatorSettings">
+    <option name="configs">
+      <FeatureEvaluatorConfig>
+        <option name="evaluatorMethodFqn" value="com.lukastomoszek.idea.codemetricsvisualizationsdemo.feature.DemoFeatureClient.isFeatureEnabled" />
+        <option name="name" value="Demo App Feature Client" />
+      </FeatureEvaluatorConfig>
+    </option>
+  </component>
+</project>

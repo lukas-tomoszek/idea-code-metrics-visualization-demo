@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceSettings">
+    <option name="configs">
+      <DataSourceConfig>
+        <option name="filePath" value="C:\Users\lukas\IdeaProjects\idea-code-metrics-visualization-demo\demodata\apache_access.log" />
+        <option name="name" value="Apache Access Logs" />
+        <option name="sql" value="CREATE OR REPLACE TABLE access_logs AS&#10;SELECT&#10;    split_part(t.line, ' ', 1) AS ip_address,&#10;    strptime(split_part(split_part(t.line, '[', 2), ']', 1), '%d/%b/%Y:%H:%M:%S')::TIMESTAMP AS timestamp,&#10;    split_part(split_part(t.line, '&quot;', 2), ' ', 1) AS http_method,&#10;    split_part(split_part(t.line, '&quot;', 2), ' ', 2) AS request_path,&#10;    split_part(split_part(t.line, '&quot;', 2), ' ', 3) AS http_version,&#10;    TRY_CAST(regexp_extract(t.line, '&quot; ([0-9]{3}) ', 1) AS INTEGER) AS status_code,&#10;    TRY_CAST(NULLIF(regexp_extract(t.line, ' ([0-9]+) &quot;[^&quot;]*&quot; &quot;[^&quot;]*&quot; [0-9]+$', 1), '') AS BIGINT) AS response_size,&#10;    regexp_extract(t.line, ' &quot;[^&quot;]*&quot; &quot;([^&quot;]*)&quot;', 1) AS user_agent,&#10;    TRY_CAST(regexp_extract(t.line, '&quot;[^&quot;]*&quot; &quot;[^&quot;]*&quot; ([0-9]+)$', 1) AS INTEGER) AS duration_ms&#10;FROM read_csv('C:\Users\lukas\IdeaProjects\idea-code-metrics-visualization-demo\demodata\apache_access.log',&#10;              delim='\n',&#10;              header=false,&#10;              columns={'line':'VARCHAR'},&#10;              strict_mode=false,&#10;              timestampformat=' ') AS t&#10;WHERE t.line &lt;&gt; '';&#10;" />
+        <option name="tableName" value="access_logs" />
+        <option name="lastImportedAt" value="1747587515578" />
+      </DataSourceConfig>
+      <DataSourceConfig>
+        <option name="filePath" value="C:\Users\lukas\IdeaProjects\idea-code-metrics-visualization-demo\demodata\application_activity.csv" />
+        <option name="name" value="App Activity Logs" />
+        <option name="sql" value="CREATE OR REPLACE TABLE app_activity AS&#10;SELECT &#10;    strptime(timestamp, '%Y-%m-%dT%H:%M:%SZ')::TIMESTAMP AS timestamp,&#10;    method_fqn,&#10;    user_id&#10;FROM read_csv('C:/Users/lukas/IdeaProjects/idea-code-metrics-visualization-demo/demodata/application_activity.csv',&#10;              header=true, timestampformat=' ');&#10;" />
+        <option name="tableName" value="app_activity" />
+        <option name="lastImportedAt" value="1747587516593" />
+      </DataSourceConfig>
+      <DataSourceConfig>
+        <option name="filePath" value="C:\Users\lukas\IdeaProjects\idea-code-metrics-visualization-demo\demodata\user_features.csv" />
+        <option name="name" value="User Features" />
+        <option name="sql" value="CREATE OR REPLACE TABLE user_feature_flags AS&#10;SELECT &#10;    user_id,&#10;    feature_name&#10;FROM read_csv('C:/Users/lukas/IdeaProjects/idea-code-metrics-visualization-demo/demodata/user_features.csv',&#10;              header=true, timestampformat=' ');&#10;" />
+        <option name="tableName" value="user_feature_flags" />
+        <option name="lastImportedAt" value="1747587849843" />
+      </DataSourceConfig>
+    </option>
+  </component>
+</project>

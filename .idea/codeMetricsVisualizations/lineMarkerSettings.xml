@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LineMarkerSettings">
+    <option name="configs">
+      <LineMarkerConfig>
+        <option name="llmDescription" value="SQL should return ratio of count of users who used the method and have the feature enabled to count of all users of the method in %. The Line Marker color should be grey if 0%, dark red if &lt; 5%, dark dark green if &gt;95%, black if 100%. It should not be shown when the method has no logs." />
+        <option name="name" value="Feature Adoption %" />
+        <option name="sqlTemplate" value="SELECT&#10;  COUNT(DISTINCT u.user_id) * 100.0 / NULLIF(COUNT(DISTINCT a.user_id), 0) AS percent_users_with_feature&#10;FROM app_activity a&#10;LEFT JOIN user_feature_flags u&#10;  ON a.user_id = u.user_id AND u.feature_name = '#feature_name#'&#10;WHERE a.method_fqn = '#method_fqn#';&#10;" />
+        <option name="lineMarkerRules">
+          <RangeRule>
+            <option name="colorHex" value="#808080" />
+            <option name="toString" value="0" />
+          </RangeRule>
+          <RangeRule>
+            <option name="colorHex" value="#8B0000" />
+            <option name="fromString" value="0" />
+            <option name="toString" value="10" />
+          </RangeRule>
+          <RangeRule>
+            <option name="fromString" value="10" />
+            <option name="toString" value="90" />
+          </RangeRule>
+          <RangeRule>
+            <option name="colorHex" value="#006400" />
+            <option name="fromString" value="90" />
+            <option name="toString" value="100" />
+          </RangeRule>
+          <RangeRule>
+            <option name="colorHex" value="#000000" />
+            <option name="fromString" value="100" />
+          </RangeRule>
+        </option>
+        <option name="llmRelevantTableNames">
+          <option value="app_activity" />
+          <option value="user_feature_flags" />
+        </option>
+      </LineMarkerConfig>
+      <LineMarkerConfig>
+        <option name="llmDescription" value="SQL should return ratio (%) of records with error status (&gt;=400) of selected mapping. The Line Marker should display when it is higher then 5% with color scale from yellow to red. It shouldn't display when lower then 5%." />
+        <option name="name" value="Endpoint Error Rate %" />
+        <option name="sqlTemplate" value="SELECT COUNT(*) FILTER (WHERE status_code &gt;= 400) * 100.0 /&#10;       NULLIF(COUNT(*), 0)&#10;FROM access_logs&#10;WHERE http_method = '#mapping_method#'&#10;  AND REGEXP_MATCHES(request_path, '^#mapping_path#/?(\?.*)?$')&#10;  AND REGEXP_MATCHES(request_path, '^(#mapping_paths_in_file#)(/.*)?(\?.*)?$');&#10;" />
+        <option name="lineMarkerRules">
+          <RangeRule>
+            <option name="toString" value="5" />
+          </RangeRule>
+          <RangeRule>
+            <option name="colorHex" value="#FFFF00" />
+            <option name="fromString" value="5" />
+            <option name="toString" value="15" />
+          </RangeRule>
+          <RangeRule>
+            <option name="colorHex" value="#FFA500" />
+            <option name="fromString" value="15" />
+            <option name="toString" value="30" />
+          </RangeRule>
+          <RangeRule>
+            <option name="colorHex" value="#FF0000" />
+            <option name="fromString" value="30" />
+          </RangeRule>
+        </option>
+        <option name="llmRelevantTableNames">
+          <option value="access_logs" />
+        </option>
+      </LineMarkerConfig>
+    </option>
+  </component>
+</project>
