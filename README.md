@@ -127,7 +127,7 @@ After configuring data sources and (optionally) other settings, apply the change
           You should see a chart of P95 response times for the last week. Try moving your caret to different endpoint 
           methods in `DemoController.java` to see the chart filters change dynamically (if the "lock context" button is off).
           ![p95_response_time_chart.png](docs/images/p95_response_time_chart.png)
-        * Choose **"Unique Users / Service Method"**: Open [DemoController.java](src/main/java/com/lukastomoszek/idea/codemetricsvisualizationsdemo/controller/DemoController.java).
+        * Choose **"Unique Users / Service Method"**: Open [DemoService.java](src/main/java/com/lukastomoszek/idea/codemetricsvisualizationsdemo/service/DemoService.java).
           The chart should display bars representing unique user counts for each method in that file (`getSimpleGreeting`, `getFancyGreeting`, etc.).
           ![unique_users_chart.png](docs/images/unique_users_chart.png)
 
